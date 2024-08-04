@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - ubuntu-*.*.*
+  # Allows manual workflow run (must in default branch to work)
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,11 +14,9 @@ jobs:
       matrix:
         release: [
           {distro: "ubuntu", version: "jammy"},
-          {distro: "ubuntu", version: "noble"}
         ]
         os: [
-          {arch: "aarch64", builder: "ubicloud-standard-2-arm", source: "http://ports.ubuntu.com/ubuntu-ports"},
-          {arch: "x86_64", builder: "warp-ubuntu-latest-x64-2x", source: "http://archive.ubuntu.com/ubuntu"}
+          {arch: "x86_64", builder: "ubuntu-latest", source: "http://archive.ubuntu.com/ubuntu"}
         ]
 
     runs-on: ${{matrix.os.builder}}

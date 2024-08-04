@@ -1,9 +1,12 @@
+---
 name: 'Alpine'
 
 on:
   push:
     tags:
       - alpine-*.*.*
+  # Allows manual workflow run (must in default branch to work)
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,21 +14,17 @@ jobs:
       fail-fast: false
       matrix:
         release: [
-          {distro: "alpine", version: "3.16"},
-          {distro: "alpine", version: "3.17"},
-          {distro: "alpine", version: "3.18"},
-          {distro: "alpine", version: "3.19"},
           {distro: "alpine", version: "3.20"},
           {distro: "alpine", version: "edge"}
         ]
         os: [
-          {arch: "aarch64", builder: "ubicloud-standard-2-arm"},
-          {arch: "x86_64", builder: "warp-ubuntu-latest-x64-2x"}
+          #{arch: "aarch64", builder: "ubicloud-standard-2-arm"},
+          {arch: "x86_64", builder: "ubuntu-latest"}
         ]
 
     runs-on: ${{matrix.os.builder}}
     env:
-      ImageOS: ubuntu22
+      ImageOS: ubuntu24
     steps: 
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,10 +75,6 @@ jobs:
       fail-fast: false
       matrix:
         release: [
-          {distro: "alpine", version: "3.16", checks: "ipv4,ipv6"},
-          {distro: "alpine", version: "3.17", checks: "ipv4,ipv6"},
-          {distro: "alpine", version: "3.18", checks: "ipv4,ipv6"},
-          {distro: "alpine", version: "3.19", checks: "ipv4,ipv6"},
           {distro: "alpine", version: "3.20", checks: "ipv4,ipv6"},
           {distro: "alpine", version: "edge", checks: "ipv4,ipv6"}
         ]
